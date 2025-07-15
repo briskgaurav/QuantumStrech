@@ -60,7 +60,7 @@ export default function TechnologyCards() {
         {cards.map((card, index) => (
           <div key={index} className={styles.card}>
             <div className={styles.cardHeader}>
-              <h3 className={styles.title}>{card.title}</h3>
+              <p className={styles.title}>{card.title}</p>
             </div>
             <div className={styles.divider}></div>
             <div>

@@ -34,7 +34,7 @@ export default function NewTechnology() {
 
   return (
     <section className={textStyles.container} id="technology">
-      <h1 className={textStyles.heading}>New Technology</h1>
+      <p className={textStyles.heading}>New Technology</p>
     </section>
   );
 }

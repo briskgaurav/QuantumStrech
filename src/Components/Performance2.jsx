@@ -34,12 +34,12 @@ export default function Performance2() {
 
   return (
     <section className="flex justify-center flex-col items-center min-h-screen w-full performance-container2 py-[5%]">
-      <h1 className={`${textStyles.base} ${textStyles.heading}`}>
+      <p className={`${textStyles.base} ${textStyles.heading}`}>
         In the world of packaging, every detail counts. Quantum emerges at the{" "}
         <br className="max-sm:hidden" />
         intersection of innovation and necessity, designed for those who seek
         the best.
-      </h1>
+      </p>
       <div className="w-[65%] max-sm:w-[90%] py-[5%] flex flex-col md:flex-row justify-between max-sm:gap-[5vw] max-md:gap-[10vw] gap-[5%]">
         <div className={`md:w-[47.5%] w-full ${textStyles.base} ${textStyles.paragraph}`}>
           Traditional wraps have set a standard; Quantum redefines it. Every

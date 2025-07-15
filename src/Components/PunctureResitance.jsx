@@ -39,7 +39,7 @@ export default function PunctureResitance() {
 
   return (
     <section className={styles.section} id="puncture-resitance">
-      <h1 className={styles.heading}>Puncture Resitance</h1>
+      <p className={styles.heading}>Puncture Resitance</p>
       <div className={styles.textContainer}>
         <p className={styles.paragraph}>
           Traditional wraps have set a standard; Quantum redefines it. Every
