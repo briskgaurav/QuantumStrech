@@ -1,4 +1,5 @@
 'use client'
+import React from "react";
 import Blob from "@/Components/Blob";
 import Hero from "@/Components/Hero";
 import Performance from "@/Components/Performance";
@@ -9,13 +10,23 @@ import TechnologyCards from "@/Components/TechnologyCards";
 import PunctureResitance from "@/Components/PunctureResitance";
 import ClingeStringe from "@/Components/ClingeStringe";
 import TechnicalSpecifications from "@/Components/TechnicalSpecifications";
-import React from "react";
 import Form from "@/Components/Form";
-export default function page() {
+
+const LOGO_GRADIENT_STOPS = [
+  { offset: "0", color: "#B2883E" },
+  { offset: "0.132936", color: "#E0B54D" },
+  { offset: "0.186698", color: "#ECD799" },
+  { offset: "0.325922", color: "#AB8C40" },
+  { offset: "0.558973", color: "#E0B54D" },
+  { offset: "0.682701", color: "#C29743" },
+  { offset: "1", color: "#FEF2BD" }
+];
+
+export default function Page() {
   return (
     <>
       <Blob />
-      <div className="h-screen  w-screen model-container z-50 left-0 flex flex-col justify-center items-center ">
+      <main className="h-screen w-screen model-container z-50 left-0 flex flex-col justify-center items-center">
         <div className="h-full pointer-events-none z-0 w-full">
           <Hero />
           <Performance />
@@ -28,7 +39,7 @@ export default function page() {
           <TechnicalSpecifications />
           <Form />
         </div>
-      </div>
+      </main>
       <div className="h-fit w-screen p-10 max-sm:p-[5vw] fixed inset-0 z-100">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +54,6 @@ export default function page() {
           />
           <defs>
             <linearGradient
-              xmlns="http://www.w3.org/2000/svg"
               id="paint0_linear_834_516"
               x1="10.5561"
               y1="5.80756"
@@ -51,13 +61,9 @@ export default function page() {
               y2="38.4678"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#B2883E" />
-              <stop offset="0.132936" stop-color="#E0B54D" />
-              <stop offset="0.186698" stop-color="#ECD799" />
-              <stop offset="0.325922" stop-color="#AB8C40" />
-              <stop offset="0.558973" stop-color="#E0B54D" />
-              <stop offset="0.682701" stop-color="#C29743" />
-              <stop offset="1" stop-color="#FEF2BD" />
+              {LOGO_GRADIENT_STOPS.map(({offset, color}) => (
+                <stop key={offset} offset={offset} stopColor={color} />
+              ))}
             </linearGradient>
           </defs>
         </svg>

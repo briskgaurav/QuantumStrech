@@ -11,17 +11,17 @@ export default function Hero() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if(!audioRef.current) return;
     const audio = audioRef.current;
-    console.log(audio)
-    const split = new SplitText(textRef.current, {
-      type: "words",
-    });
+    if (!audio) return;
 
-    audio.volume = 0;
-    audio.muted = true;
-    audio.play()
-      .then(() => {
+    const split = new SplitText(textRef.current, { type: "words" });
+
+    const initAudio = async () => {
+      try {
+        audio.volume = 0;
+        audio.muted = true;
+        await audio.play();
+        
         setTimeout(() => {
           audio.muted = false;
           gsap.to(audio, {
@@ -30,17 +30,22 @@ export default function Hero() {
             ease: "power2.out",
           });
         }, 500);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.warn("Autoplay error:", err);
-      });
+      }
+    };
 
-    gsap.from(split.words, {
-      opacity: 0,
-      duration: 2,
-      stagger: 0.5,
-      ease: "power4.out",
-    });
+    const animateText = () => {
+      gsap.from(split.words, {
+        opacity: 0,
+        duration: 2,
+        stagger: 0.5,
+        ease: "power4.out",
+      });
+    };
+
+    initAudio();
+    animateText();
 
     return () => {
       split.revert();
@@ -50,13 +55,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section
-      className="flex justify-center items-center h-screen w-screen "
-      id="hero"
-    >
+    <section className="flex justify-center items-center h-screen w-screen" id="hero">
       <audio ref={audioRef} src="/intro.mp3" preload="auto" />
-
-      <h1
+      <h1 
         ref={textRef}
         className="text-white text-center leading-none font-light font-sans text-[2.5vw] max-sm:text-[8vw] max-md:text-[5vw] max-sm:w-[90%] max-sm:leading-[1.2] w-[80%]"
       >

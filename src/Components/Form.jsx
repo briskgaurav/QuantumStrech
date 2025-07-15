@@ -46,13 +46,13 @@ export default function Form() {
         </defs>
       </svg>
 
-      <div className="absolute bottom-[10%] md:bottom-10 lg:bottom-20 px-4">
+      <footer className="absolute bottom-[10%] md:bottom-10 lg:bottom-20 px-4">
         <p className="text-zinc-300 max-md:text-[3vw] text-xs md:text-sm tracking-wide uppercase w-full md:w-[80%] lg:w-[60%] text-center mx-auto">
           All rights reserved © Bomark Pak Ltd. | Web development: RISE2 |
           Privacy Policy Frankopanska ulica 66B, 42230 Ludbreg, Croatia /T. +385
           42 40 50 20 / E info@bomarkpackaging.com
         </p>
-      </div>
+      </footer>
     </section>
   );
 }

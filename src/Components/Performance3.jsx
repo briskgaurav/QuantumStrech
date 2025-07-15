@@ -1,28 +1,56 @@
-"use client";
-import React, { useEffect } from "react";
+'use client'
+import React, { useEffect, useMemo } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Performance3() {
-  useEffect(() => {
-    gsap.set(".performance3-text", { opacity: 0 });
+  const cards = useMemo(() => [
+    {
+      title: "100% from renewable energy sources",
+      description:
+        "Quantum is the only stretch film produced using 100% renewable energy sources from its own production, offering an eco-friendly and efficient product.",
+    },
+    {
+      title: "Reduced carbon footprint", 
+      description:
+        "Our innovative manufacturing process significantly reduces carbon emissions while maintaining superior product quality and performance.",
+    },
+    {
+      title: "Sustainable packaging solution",
+      description:
+        "Quantum represents the future of sustainable packaging, combining environmental responsibility with unmatched strength and reliability.",
+    },
+  ], []);
 
-    gsap.to(".performance3-text", {
-      opacity: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.3,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".performance-container3",
-        start: "top center",
-        end: "bottom center",
-        scrub: true,
-      },
-    });
+  useEffect(() => {
+    const animation = gsap.timeline()
+      .set(".performance3-text", { opacity: 0 })
+      .to(".performance3-text", {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        stagger: 0.3,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".performance-container3",
+          start: "top center",
+          end: "bottom center", 
+          scrub: true,
+        },
+      });
+
+    return () => animation.kill();
   }, []);
+
+  const cardStyles = useMemo(() => ({
+    container: "w-full max-sm:w-[80%] max-md:w-[70%] h-full performance3-text translate-x-[15%] bg-white/5 backdrop-blur-sm rounded-lg p-[3%] shadow-lg",
+    logo: "logo flex items-center justify-center h-[40%] max-sm:h-fit w-full",
+    content: "flex flex-col pt-[10vw] max-sm:gap-[5vw] gap-[3%]",
+    title: "text-[1.2vw] max-sm:text-[5vw] max-sm:text-center uppercase pt-[5%] max-md:text-[4vw] max-md:text-center font-medium text-zinc-300",
+    description: "text-[1vw] max-md:text-[2.5vw] max-md:text-center max-sm:text-[3vw] max-sm:text-center text-zinc-100"
+  }), []);
 
   return (
     <section
@@ -30,28 +58,9 @@ export default function Performance3() {
       id="performance3"
     >
       <div className="w-[90%] h-full flex flex-col md:flex-row items-center max-sm:gap-[5vw] gap-[2%] max-md:gap-[10vw] py-[3%]">
-        {[
-          {
-            title: "100% from renewable energy sources",
-            description:
-              "Quantum is the only stretch film produced using 100% renewable energy sources from its own production, offering an eco-friendly and efficient product.",
-          },
-          {
-            title: "Reduced carbon footprint",
-            description:
-              "Our innovative manufacturing process significantly reduces carbon emissions while maintaining superior product quality and performance.",
-          },
-          {
-            title: "Sustainable packaging solution",
-            description:
-              "Quantum represents the future of sustainable packaging, combining environmental responsibility with unmatched strength and reliability.",
-          },
-        ].map((card, index) => (
-          <div
-            key={index}
-            className="cards w-full max-sm:w-[80%] max-md:w-[70%] h-full performance3-text translate-x-[15%] bg-white/5 backdrop-blur-sm rounded-lg p-[3%] shadow-lg"
-          >
-            <div className="logo flex items-center justify-center h-[40%] max-sm:h-fit w-full">
+        {cards.map((card, index) => (
+          <div key={index} className={cardStyles.container}>
+            <div className={cardStyles.logo}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="100%"
@@ -85,11 +94,9 @@ export default function Performance3() {
                 </defs>
               </svg>
             </div>
-            <div className="flex flex-col pt-[10vw] max-sm:gap-[5vw] gap-[3%]">
-              <p className="text-[1.2vw] max-sm:text-[5vw] max-sm:text-center uppercase pt-[5%] max-md:text-[4vw] max-md:text-center font-medium text-zinc-300">
-                {card.title}
-              </p>
-              <p className="text-[1vw] max-md:text-[2.5vw] max-md:text-center max-sm:text-[3vw] max-sm:text-center text-zinc-100">{card.description}</p>
+            <div className={cardStyles.content}>
+              <p className={cardStyles.title}>{card.title}</p>
+              <p className={cardStyles.description}>{card.description}</p>
             </div>
           </div>
         ))}

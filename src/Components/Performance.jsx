@@ -1,15 +1,21 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Performance() {
-  useEffect(() => {
-    gsap.set(".performance-text", { opacity: 0 }); 
+  const textStyles = useMemo(() => (
+    "text-white translate-x-[15%] performance-text text-[8vw] max-sm:text-[12vw] w-[80%] max-sm:uppercase max-sm:w-[90%] font-light font-sans leading-none text-center"
+  ), []);
 
-    gsap.to(".performance-text", {
+  useEffect(() => {
+    const texts = document.querySelectorAll(".performance-text");
+    
+    gsap.set(texts, { opacity: 0 });
+
+    const animation = gsap.to(texts, {
       opacity: 1,
       x: 0,
       duration: 1,
@@ -22,16 +28,16 @@ export default function Performance() {
         scrub: true,
       },
     });
+
+    return () => {
+      animation.kill();
+    };
   }, []);
 
   return (
     <section className="flex flex-col justify-center items-center h-screen w-full performance-container">
-      <p className="text-white translate-x-[15%] performance-text text-[8vw] max-sm:text-[12vw] w-[80%] max-sm:uppercase max-sm:w-[90%] font-light font-sans leading-none text-center">
-        Strong Film 
-      </p>
-      <p className="text-white translate-x-[15%] performance-text text-[8vw] max-sm:text-[12vw] w-[80%] max-sm:uppercase max-sm:w-[90%] font-light font-sans leading-none text-center">
-        Performance
-      </p>
+      <p className={textStyles}>Strong Film</p>
+      <p className={textStyles}>Performance</p>
     </section>
   );
 }
