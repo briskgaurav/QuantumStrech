@@ -36,20 +36,24 @@ export default function TechnologyCards() {
   }), []);
 
   useEffect(() => {
-    const animation = gsap.timeline()
-      .set(".technologyCards-text", { opacity: 1 })
-      .from(".technologyCards-text", {
+    const animation = gsap.fromTo(
+      ".technologyCards-text",
+      {
         opacity: 0,
+      },
+      {
+        opacity: 1,
         duration: 1,
-        stagger: 0.1,
+        stagger: 0.2,
         ease: "power2.out",
         scrollTrigger: {
           trigger: ".technologyCards-container",
           start: "top center",
-          end: "bottom center",
-          scrub: true,
-        },
-      });
+          end: "bottom center", 
+          scrub: true
+        }
+      }
+    );
 
     return () => animation.kill();
   }, []);

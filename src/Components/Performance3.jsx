@@ -1,56 +1,54 @@
-'use client'
+"use client";
 import React, { useEffect, useMemo } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { createScrollAnimation } from "@/app/Animation";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Performance3() {
-  const cards = useMemo(() => [
-    {
-      title: "100% from renewable energy sources",
-      description:
-        "Quantum is the only stretch film produced using 100% renewable energy sources from its own production, offering an eco-friendly and efficient product.",
-    },
-    {
-      title: "Reduced carbon footprint", 
-      description:
-        "Our innovative manufacturing process significantly reduces carbon emissions while maintaining superior product quality and performance.",
-    },
-    {
-      title: "Sustainable packaging solution",
-      description:
-        "Quantum represents the future of sustainable packaging, combining environmental responsibility with unmatched strength and reliability.",
-    },
-  ], []);
+  const cards = useMemo(
+    () => [
+      {
+        title: "100% from renewable energy sources",
+        description:
+          "Quantum is the only stretch film produced using 100% renewable energy sources from its own production, offering an eco-friendly and efficient product.",
+      },
+      {
+        title: "Reduced carbon footprint",
+        description:
+          "Our innovative manufacturing process significantly reduces carbon emissions while maintaining superior product quality and performance.",
+      },
+      {
+        title: "Sustainable packaging solution",
+        description:
+          "Quantum represents the future of sustainable packaging, combining environmental responsibility with unmatched strength and reliability.",
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
-    const animation = gsap.timeline()
-      .set(".performance3-text", { opacity: 0 })
-      .to(".performance3-text", {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        stagger: 0.3,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".performance-container3",
-          start: "top center",
-          end: "bottom center", 
-          scrub: true,
-        },
-      });
+    const animation = createScrollAnimation(
+      ".performance3-text",
+      ".performance-container3",
+      "15%",
+      0.3
+    );
 
     return () => animation.kill();
   }, []);
 
-  const cardStyles = useMemo(() => ({
-    container: "w-full max-sm:w-[80%] max-md:w-[70%] h-full performance3-text translate-x-[15%] bg-white/5 backdrop-blur-sm rounded-lg p-[3%] shadow-lg",
-    logo: "logo flex items-center justify-center h-[40%] max-sm:h-fit w-full",
-    content: "flex flex-col pt-[10vw] max-sm:gap-[5vw] gap-[3%]",
-    title: "text-[1.2vw] max-sm:text-[5vw] max-sm:text-center uppercase pt-[5%] max-md:text-[4vw] max-md:text-center font-medium text-zinc-300",
-    description: "text-[1vw] max-md:text-[2.5vw] max-md:text-center max-sm:text-[3vw] max-sm:text-center text-zinc-100"
-  }), []);
+  const cardStyles = useMemo(
+    () => ({
+      container:
+        "w-full max-sm:w-[80%] max-md:w-[70%] h-full performance3-text translate-x-[15%] bg-white/5 backdrop-blur-sm rounded-lg p-[3%] shadow-lg",
+      logo: "logo flex items-center justify-center h-[40%] max-sm:h-fit w-full",
+      content: "flex flex-col pt-[10vw] max-sm:gap-[5vw] gap-[3%]",
+      title:
+        "text-[1.2vw] max-sm:text-[5vw] max-sm:text-center uppercase pt-[5%] max-md:text-[4vw] max-md:text-center font-medium text-zinc-300",
+      description:
+        "text-[1vw] max-md:text-[2.5vw] max-md:text-center max-sm:text-[3vw] max-sm:text-center text-zinc-100",
+    }),
+    []
+  );
 
   return (
     <section

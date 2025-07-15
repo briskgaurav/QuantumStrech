@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import Blob from "@/Components/Blob";
 import Hero from "@/Components/Hero";
@@ -19,7 +19,7 @@ const LOGO_GRADIENT_STOPS = [
   { offset: "0.325922", color: "#AB8C40" },
   { offset: "0.558973", color: "#E0B54D" },
   { offset: "0.682701", color: "#C29743" },
-  { offset: "1", color: "#FEF2BD" }
+  { offset: "1", color: "#FEF2BD" },
 ];
 
 export default function Page() {
@@ -61,7 +61,7 @@ export default function Page() {
               y2="38.4678"
               gradientUnits="userSpaceOnUse"
             >
-              {LOGO_GRADIENT_STOPS.map(({offset, color}) => (
+              {LOGO_GRADIENT_STOPS.map(({ offset, color }) => (
                 <stop key={offset} offset={offset} stopColor={color} />
               ))}
             </linearGradient>

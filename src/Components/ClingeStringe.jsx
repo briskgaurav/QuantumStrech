@@ -1,9 +1,7 @@
 'use client'
 import React, { useEffect, useMemo } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { createScrollAnimation } from "@/app/Animation";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function ClingeStringe() {
   const styles = useMemo(() => ({
@@ -14,27 +12,14 @@ export default function ClingeStringe() {
   }), []);
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".clingestringe-container",
-        start: "top top",
-        end: "bottom center",
-        scrub: true,
-        pin: true,
-      }
-    });
+   const animation = createScrollAnimation(
+    [".clinge-stringe-text", ".clinge-text-animation"],
+    ".clingestringe-container",
+    "15%",
+    0.2
+   );
 
-    gsap.set([".clinge-stringe-text", ".clinge-text-animation"], { opacity: 0 });
-
-    tl.to([".clinge-stringe-text", ".clinge-text-animation"], {
-      opacity: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power2.out",
-    });
-
-    return () => tl.kill();
+    return () => animation.kill();
   }, []);
 
   return (

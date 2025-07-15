@@ -1,9 +1,6 @@
 'use client'
 import React, { useEffect, useMemo } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { createScrollAnimation } from "@/app/Animation";
 
 export default function PunctureResitance() {
   const styles = useMemo(() => ({
@@ -14,25 +11,12 @@ export default function PunctureResitance() {
   }), []);
 
   useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".puncture-resitance-container",
-        start: "top top",
-        end: "bottom center",
-        scrub: true,
-        pin: true,
-      }
-    });
-
-    gsap.set([".puncture-resitance-text", ".puncture-text-animation"], { opacity: 0 });
-
-    tl.to([".puncture-resitance-text", ".puncture-text-animation"], {
-      opacity: 1,
-      x: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power2.out",
-    });
+    const animation = createScrollAnimation(
+      [".puncture-resitance-text", ".puncture-text-animation"],
+      ".puncture-resitance-container", 
+      "15%",
+      0.2
+    );
 
     return () => tl.kill();
   }, []);

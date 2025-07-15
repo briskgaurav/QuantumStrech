@@ -1,9 +1,8 @@
 'use client'
 import React, { useEffect, useMemo } from "react";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { createScrollAnimation } from "@/app/Animation";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Performance2() {
   const textStyles = useMemo(() => ({
@@ -13,21 +12,12 @@ export default function Performance2() {
   }), []);
 
   useEffect(() => {
-    const animation = gsap.timeline()
-      .set(".performance2-text", { opacity: 0 })
-      .to(".performance2-text", {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".performance-container2",
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-        },
-      });
+    const animation = createScrollAnimation(
+      ".performance2-text",
+      ".performance-container2",
+      "15%",
+      0.2
+    );
 
     return () => animation.kill();
   }, []);

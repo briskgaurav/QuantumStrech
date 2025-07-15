@@ -35,7 +35,7 @@ export default function TechnicalSpecifications() {
     <section className={styles.section} id="technical-specifications">
       <div className={styles.container}>
         <p className={styles.paragraph}>contact us for</p>
-        <p className={styles.heading}>Technical Specifications</p>
+        <h1 className={styles.heading}>Technical Specifications</h1>
       </div>
     </section>
   );

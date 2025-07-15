@@ -1,33 +1,21 @@
 'use client'
 import React, { useEffect, useMemo } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import { createScrollAnimation } from "@/app/Animation";
 
-gsap.registerPlugin(ScrollTrigger);
 
 export default function NewTechnology() {
   const textStyles = useMemo(() => ({
     container: "flex justify-center items-center h-screen w-full technology-container",
-    heading: "text-white text-center translate-x-[15vw] -translate-y-[15vh] leading-none font-light max-sm:uppercase max-sm:text-[12vw] font-sans text-[7vw] w-[70%] new-technology-text"
+    heading: "text-white text-center translate-x-[15vw] -translate-y-[15vw] leading-none font-light max-sm:uppercase max-sm:text-[12vw] font-sans text-[7vw] w-[70%] new-technology-text"
   }), []);
 
   useEffect(() => {
-    const animation = gsap.timeline()
-      .set(".new-technology-text", { opacity: 0 })
-      .to(".new-technology-text", {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        duration: 1,
-        stagger: 0.3,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".technology-container",
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-        },
-      });
+   const animation = createScrollAnimation(
+    ".new-technology-text",
+    ".technology-container",
+    "15%",
+    0.3
+   );
 
     return () => animation.kill();
   }, []);
