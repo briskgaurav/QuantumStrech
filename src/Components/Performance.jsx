@@ -26,10 +26,10 @@ export default function Performance() {
 
   return (
     <section className="flex flex-col justify-center items-center h-screen w-full performance-container">
-      <p className="text-white translate-x-[150px] performance-text text-8xl w-[50%] font-light font-sans leading-none text-center">
+      <p className="text-white translate-x-[15%] performance-text text-[8vw] max-sm:text-[12vw] w-[80%] max-sm:uppercase max-sm:w-[90%] font-light font-sans leading-none text-center">
         Strong Film 
       </p>
-      <p className="text-white translate-x-[150px] performance-text text-8xl w-[50%] font-light font-sans leading-none text-center">
+      <p className="text-white translate-x-[15%] performance-text text-[8vw] max-sm:text-[12vw] w-[80%] max-sm:uppercase max-sm:w-[90%] font-light font-sans leading-none text-center">
         Performance
       </p>
     </section>

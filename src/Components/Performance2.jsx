@@ -26,22 +26,22 @@ export default function Performance2() {
   }, []);
 
   return (
-    <section className=" flex justify-center flex-col items-center h-screen w-full performance-container2 ">
-      <h1 className="text-white translate-x-[150px] performance2-text text-center leading-none font-light font-sans text-[1.8vw] w-[70%]">
+    <section className="flex justify-center flex-col items-center min-h-screen w-full performance-container2 py-[5%]">
+      <h1 className="text-white translate-x-[15%] performance2-text text-center leading-none font-light font-sans text-[1.8vw] max-sm:text-[6vw] w-[70%] max-sm:w-[90%] max-md:text-[4vw] max-sm:translate-x-[5%]">
         In the world of packaging, every detail counts. Quantum emerges at the{" "}
-        <br />
+        <br className="max-sm:hidden" />
         intersection of innovation and necessity, designed for those who seek
         the best.
       </h1>
-      <div className="w-[65%] py-10 flex justify-between gap-30">
-        <div className="w-[50%] performance2-text  translate-x-[150px] text-sm text-zinc-500">
+      <div className="w-[65%]  max-sm:w-[90%] py-[5%] flex flex-col md:flex-row justify-between max-sm:gap-[5vw] max-md:gap-[10vw] gap-[5%]">
+        <div className="md:w-[47.5%] max-md:text-[2.5vw] w-full performance2-text translate-x-[15%] max-sm:translate-x-[5%] text-[1vw] max-sm:text-[4vw] text-zinc-500">
           Traditional wraps have set a standard; Quantum redefines it. Every
           inch is engineered for optimal performance, embracing products with
           unmatched resilience. While many films promise protection, Quantum
           delivers it consistently, adapting to diverse challenges with grace
           and tenacity.
         </div>
-        <div className="w-[50%] performance2-text  translate-x-[150px] text-sm text-zinc-500">
+        <div className="md:w-[47.5%] w-full max-md:text-[2.5vw] performance2-text translate-x-[15%] max-sm:translate-x-[5%]  text-[1vw] max-sm:text-[4vw]  text-zinc-500">
           Beyond just wrapping, Quantum is a testament to advanced material
           science. Its properties, meticulously enhanced, work in harmony to
           safeguard every package. From the initial stretch to long-term

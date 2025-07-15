@@ -51,14 +51,14 @@ export default function Hero() {
 
   return (
     <section
-      className="flex justify-center items-center h-screen w-full "
+      className="flex justify-center items-center h-screen w-screen "
       id="hero"
     >
       <audio ref={audioRef} src="/intro.mp3" preload="auto" />
 
       <h1
         ref={textRef}
-        className="text-white text-center leading-none font-light font-sans text-[2.5vw] w-[70%]"
+        className="text-white text-center leading-none font-light font-sans text-[2.5vw] max-sm:text-[8vw] max-md:text-[5vw] max-sm:w-[90%] max-sm:leading-[1.2] w-[80%]"
       >
         Discover Quantum, revolutionizing the packaging industry with
         unparalleled elasticity and durability. Where traditional wraps falter,

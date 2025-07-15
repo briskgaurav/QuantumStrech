@@ -9,7 +9,6 @@ export default function TechnologyCards() {
     gsap.set(".technologyCards-text", { opacity: 1 });
 
     gsap.from(".technologyCards-text", {
-    
       opacity: 0,
       duration: 1,
       stagger: 0.1,
@@ -23,8 +22,9 @@ export default function TechnologyCards() {
     });
   }, []);
   return (
-    <section className=" flex justify-center items-center technologyCards-container h-screen w-full ">
-      <div className="w-[80%]  h-[100%] grid grid-cols-2 gap-8">
+    <section className="flex justify-center items-center technologyCards-container min-h-screen w-full py-[5vh]">
+      <div className="w-[90%] max-w-[1400px] max-md:grid-cols-2
+       max-sm:grid-cols-2 grid grid-cols-1 md:grid-cols-2 gap-[4vw] md:gap-[3vw]">
         {[
           {
             title: "Advanced Polymer Technology",
@@ -45,16 +45,16 @@ export default function TechnologyCards() {
         ].map((card, index) => (
           <div
             key={index}
-            className="w-full md:w-80 lg:w-96 h-fit bg-white/5 backdrop-blur-sm rounded-lg shadow-lg hover:scale-105 transition-transform -translate-x-[-150px] duration-300 technologyCards-text"
+            className="w-full h-fit  max-sm:w-[100%] bg-white/5 backdrop-blur-sm rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 technologyCards-text"
           >
             <div className="w-full bg-white/10 rounded-t-lg">
-              <h3 className="text-white text-base md:text-lg lg:text-xl font-light p-3 md:p-4">
+              <h3 className="text-white text-[3vw] md:text-[1.8vw] lg:text-[1.4vw] font-light p-[3vw] md:p-[2vw]">
                 {card.title}
               </h3>
             </div>
-            <div className="p-[2px] bg-gradient-to-r from-[#B2883E] via-[#E0B54D] to-[#FEF2BD] "></div>
+            <div className="p-[2px] bg-gradient-to-r from-[#B2883E] via-[#E0B54D] to-[#FEF2BD]"></div>
             <div>
-              <p className="text-white text-[10px] md:text-xs lg:text-sm py-6 md:py-8 font-light p-3 md:p-4">
+              <p className="text-white text-[2.5vw] md:text-[1.4vw] lg:text-[1vw] py-[3vw] md:py-[2vw] font-light px-[3vw] md:px-[2vw]">
                 {card.para}
               </p>
             </div>

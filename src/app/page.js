@@ -15,7 +15,7 @@ export default function page() {
   return (
     <>
       <Blob />
-      <div className="h-screen  w-screen model-container top-0 z-50 left-0 flex flex-col justify-center items-center ">
+      <div className="h-screen  w-screen model-container z-50 left-0 flex flex-col justify-center items-center ">
         <div className="h-full pointer-events-none z-0 w-full">
           <Hero />
           <Performance />
@@ -29,7 +29,7 @@ export default function page() {
           <Form />
         </div>
       </div>
-      <div className="h-screen w-screen p-10 fixed inset-0 z-100">
+      <div className="h-fit w-screen p-10 max-sm:p-[5vw] fixed inset-0 z-100">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="50"

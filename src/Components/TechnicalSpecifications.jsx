@@ -23,13 +23,13 @@ export default function TechnicalSpecifications() {
 
   return (
     <section
-      className=" flex justify-center items-center h-screen w-full technical-specifications-container"
+      className="flex justify-center items-center min-h-screen w-full py-[5vh] technical-specifications-container"
       id="technical-specifications"
     >
-      <div className="flex flex-col translate-y-[300%] specifications-text bg-teal-500/5  p-10 backdrop-blur-sm rounded-2xl  items-center justify-center">
-        <p className=" text-yellow-400 text-sm uppercase">contact us for</p>
-        <h1 className="text-white text-4xl font-light font-sans">
-          TechnicalSpecifications
+      <div className="flex flex-col translate-y-[300%] specifications-text bg-white/5 p-[5vw] md:p-[3vw] backdrop-blur-sm rounded-2xl items-center justify-center w-[90%] md:w-[60%] max-w-[800px]">
+        <p className="text-yellow-400 text-[4vw] md:text-[1.2vw] uppercase tracking-wider">contact us for</p>
+        <h1 className="text-white text-[10vw] max-sm:pt-[20%] max-sm:uppercase max-sm:leading-[1] md:text-[3vw] font-light font-sans text-center">
+          Technical Specifications
         </h1>
       </div>
     </section>

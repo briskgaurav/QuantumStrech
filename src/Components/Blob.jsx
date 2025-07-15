@@ -1,5 +1,5 @@
 "use client";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -95,7 +95,7 @@ const vertexShader = `
     float displacement = noise * noiseFrequency;
     vec3 newPosition = position + normal * displacement;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-    gl_PointSize = 5.0;
+    gl_PointSize = 2.5;
 
     vUv = uv;
     vPosition = newPosition;
@@ -232,20 +232,32 @@ const fragmentShader2 = `
 
 export default function Blob() {
   const meshRef = useRef();
-  console.log(meshRef.current);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
-    <div className="h-screen w-screen fixed inset-0 ">
+    <div className="h-screen w-screen fixed inset-0">
       <Canvas className="rounded-4xl">
         <ambientLight />
-        {/* <OrbitControls /> */}
-        <BlobMesh />
+        <BlobMesh isMobile={isMobile} />
       </Canvas>
     </div>
   );
 }
 
-const BlobMesh = () => {
+const BlobMesh = ({ isMobile }) => {
+  const { viewport } = useThree();
+  const scale = isMobile ? 0.8 : 1;
   const meshRefs = {
     icosahedron: useRef(),
     sphere: useRef(),
@@ -303,11 +315,26 @@ const BlobMesh = () => {
 
       if (!ico || !sph || !pln) return;
 
+      const scrollConfig = {
+        mobile: {
+          scale: 0.6,
+          position: { x: -3, y: -1 },
+          planeScale: { x: 1.5, y: 2, z: 1.5 },
+        },
+        desktop: {
+          scale: 1.8,
+          position: { x: -6, y: -2 },
+          planeScale: { x: 2, y: 3, z: 2 },
+        }
+      };
+
+      const config = isMobile ? scrollConfig.mobile : scrollConfig.desktop;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: "#hero",
           start: "top top",
-          end: "+1000 top",
+          end: isMobile ? "+500 top" : "+1000 top",
           scrub: true,
         },
       });
@@ -316,7 +343,7 @@ const BlobMesh = () => {
         scrollTrigger: {
           trigger: "#performance3",
           start: "top 100%",
-          end: "+500 top",
+          end: isMobile ? "+300 top" : "+500 top",
           scrub: true,
         },
       });
@@ -325,7 +352,7 @@ const BlobMesh = () => {
         scrollTrigger: {
           trigger: "#puncture-resitance",
           start: "top 80%",
-          end: "+1000 top",
+          end: isMobile ? "+500 top" : "+1000 top",
           scrub: true,
         },
       });
@@ -334,7 +361,7 @@ const BlobMesh = () => {
         scrollTrigger: {
           trigger: "#clingestringe",
           start: "top 80%",
-          end: "+1000 top",
+          end: isMobile ? "+500 top" : "+1000 top",
           scrub: true,
         },
       });
@@ -343,100 +370,53 @@ const BlobMesh = () => {
         scrollTrigger: {
           trigger: "#technical-specifications",
           start: "top top",
-          end: "+1000 top",
+          end: isMobile ? "+500 top" : "+1000 top",
           scrub: true,
           pin: true,
         },
       });
 
-      tl.to(
-        ico.scale,
-        { x: 1.8, y: 1.8, z: 1.8, duration: 2, ease: "linear" },
-        "<"
-      );
-      tl.to(ico.position, { x: -6, y: -2, duration: 5, ease: "linear" }, "<");
+      // Adjust animations based on viewport
+      tl.to(ico.scale, { x: config.scale, y: config.scale, z: config.scale, duration: 2, ease: "linear" }, "<");
+      tl.to(ico.position, { x: config.position.x, y: config.position.y, duration: 5, ease: "linear" }, "<");
 
       tl2.to(ico.position, { x: 0, y: 0, z: 0, duration: 3 });
-      tl2.to(ico.scale, { x: 0.5, y: 0.5, z: 0.5, duration: 3 }, "<");
-      tl2.to(ico.scale, {
-        x: 0.8,
-        y: 0.8,
-        z: 0.8,
-        duration: 3,
-      });
+      tl2.to(ico.scale, { x: 0.5 * scale, y: 0.5 * scale, z: 0.5 * scale, duration: 3 }, "<");
+      tl2.to(ico.scale, { x: 0.8 * scale, y: 0.8 * scale, z: 0.8 * scale, duration: 3 });
 
-      tl3.to(
-        ico.position,
-        {
-          x: 0,
-          y: 0,
-          z: 0,
-          duration: 3,
-          delay: 1,
-          onComplete: () => {
-            gsap.to(shaderMaterial.uniforms.noiseFrequency, {
-              value: 0.5,
-              duration: 0.5,
-              ease: "linear",
-            });
-            // gsap.to(meshRefs.icosahedron.current, {
-            //   visible: false,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-            // gsap.to(meshRefs.plane.current, {
-            //   visible: true,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-          },
-        },
-        "<"
-      );
-
-      tl3.to(ico.scale, {
+      tl3.to(ico.position, {
         x: 0,
         y: 0,
         z: 0,
         duration: 3,
         delay: 1,
-      });
-      tl3.to(
-        pln.scale,
-        {
-          x: 2,
-          y: 3,
-          z: 2,
-          duration: 3,
-          delay: 2,
-          onReverseComplete: () => {
-            gsap.to(shaderMaterial.uniforms.noiseFrequency, {
-              value: 0.2,
-              duration: 0.5,
-              ease: "linear",
-            });
-            // gsap.to(meshRefs.plane.current, {
-            //   visible: false,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-            // gsap.to(meshRefs.icosahedron.current, {
-            //   visible: true,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-          },
+        onComplete: () => {
+          gsap.to(shaderMaterial.uniforms.noiseFrequency, {
+            value: 0.5,
+            duration: 0.5,
+            ease: "linear",
+          });
         },
-        "<"
-      );
-      // tl3.to(
-      //   pln.position,
-      //   { x: -1, y: -0.5, z: 0, duration: 3, delay: 1 },
-      //   "<"
-      // );
+      });
+
+      tl3.to(ico.scale, { x: 0, y: 0, z: 0, duration: 3, delay: 1 });
+      tl3.to(pln.scale, {
+        x: config.planeScale.x,
+        y: config.planeScale.y,
+        z: config.planeScale.z,
+        duration: 3,
+        delay: 2,
+        onReverseComplete: () => {
+          gsap.to(shaderMaterial.uniforms.noiseFrequency, {
+            value: 0.2,
+            duration: 0.5,
+            ease: "linear",
+          });
+        },
+      });
+
       tl3.to(pln.rotation, { z: degToRad(-120), duration: 10, delay: 2 }, "<");
-      tl3.to(pln.scale, { x: 5, duration: 3 }, "<");
-      // tl3.to(pln.scale, { x: 1, y: 1, z: 1, duration: 3, delay: 15 });
+      tl3.to(pln.scale, { x: 5 * scale, duration: 3 }, "<");
 
       tl4.to(pln.scale, {
         x: 0,
@@ -444,84 +424,37 @@ const BlobMesh = () => {
         z: 0,
         duration: 2,
         delay: 3,
-        onComplete: () => {
-          // gsap.to(meshRefs.plane.current, {
-          //   visible: false,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.sphere.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.solidSphere.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-        },
       });
-      // tl4.to(
-      //   pln.position,
-      //   {
-      //     x: 0,
-      //     y: 0,
-      //     z: 0,
-      //     duration: 3,
-      //   },
-      //   "<"
-      // );
-      tl4.to(
-        sph.scale,
-        {
-          x: 1,
-          y: 1,
-          z: 1,
-          duration: 3,
-          onComplete: () => {
-            gsap.to(shaderMaterial.uniforms.noiseFrequency, {
-              value: 0.0,
-              duration: 0.5,
-              delay: -2,
-              ease: "linear",
-            });
-          },
+
+      tl4.to(sph.scale, {
+        x: scale,
+        y: scale,
+        z: scale,
+        duration: 3,
+        onComplete: () => {
+          gsap.to(shaderMaterial.uniforms.noiseFrequency, {
+            value: 0.0,
+            duration: 0.5,
+            delay: -2,
+            ease: "linear",
+          });
         },
-        "<+1"
-      );
-      tl4.to(
-        solidSphere.scale,
-        {
-          x: 0.95,
-          y: 0.95,
-          z: 0.95,
-          duration: 4,
-          onReverseComplete: () => {
-            gsap.to(shaderMaterial.uniforms.noiseFrequency, {
-              value: 0.8,
-              duration: 0.5,
-              ease: "linear",
-            });
-            // gsap.to(meshRefs.plane.current, {
-            //   visible: true,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-            // gsap.to(meshRefs.sphere.current, {
-            //   visible: false,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-            // gsap.to(meshRefs.solidSphere.current, {
-            //   visible: false,
-            //   duration: 0.5,
-            //   ease: "power2.inOut",
-            // });
-          },
+      }, "<+1");
+
+      tl4.to(solidSphere.scale, {
+        x: 0.95 * scale,
+        y: 0.95 * scale,
+        z: 0.95 * scale,
+        duration: 4,
+        onReverseComplete: () => {
+          gsap.to(shaderMaterial.uniforms.noiseFrequency, {
+            value: 0.8,
+            duration: 0.5,
+            ease: "linear",
+          });
         },
-        "<"
-      );
+      }, "<");
+
       tl4.to(sph.rotation, {
         x: 0,
         y: Math.PI * 2,
@@ -542,64 +475,25 @@ const BlobMesh = () => {
         z: 0,
         duration: 3,
         ease: "linear",
-        // onComplete: () => {
-        //   gsap.to(meshRefs.sphere.current, {
-        //     visible: false,
-        //     duration: 0.5,
-        //     ease: "linear",
-        //   });
-        //   gsap.to(meshRefs.cylinder.current, {
-        //     visible: true,
-        //     duration: 0.5,
-        //     ease: "linear",
-        //   });
-        // },
       });
-      tl5.to(
-        solidSphere.scale,
-        {
-          x: 0,
-          y: 0,
-          z: 0,
-          duration: 3,
-          ease: "linear",
-          // onComplete: () => {
-          //   gsap.to(meshRefs.solidSphere.current, {
-          //     visible: false,
-          //     duration: 0.5,
-          //     ease: "linear",
-          //   });
-          // },
-        },
 
-        "<"
-      );
+      tl5.to(solidSphere.scale, {
+        x: 0,
+        y: 0,
+        z: 0,
+        duration: 3,
+        ease: "linear",
+      }, "<");
 
       tl5.to(cyl.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
+        x: scale,
+        y: scale,
+        z: scale,
         duration: 3,
         delay: 1,
         ease: "linear",
-        onReverseComplete: () => {
-          // gsap.to(meshRefs.cylinder.current, {
-          //   visible: false,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.sphere.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.solidSphere.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-        },
       });
+
       tl5.to(cyl.rotation, {
         x: 0,
         y: Math.PI / 3,
@@ -608,6 +502,7 @@ const BlobMesh = () => {
         delay: 0.5,
         ease: "linear",
       });
+
       tl5.to(cyl.scale, {
         x: 0,
         y: 0,
@@ -615,39 +510,15 @@ const BlobMesh = () => {
         duration: 3,
         delay: 1,
         ease: "linear",
-        onComplete: () => {
-          // gsap.to(meshRefs.cylinder.current, {
-          //   visible: false,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.icosahedron.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-        },
       });
 
       tl5.to(ico.scale, {
-        x: 0.5,
-        y: 0.5,
-        z: 0.5,
+        x: 0.5 * scale,
+        y: 0.5 * scale,
+        z: 0.5 * scale,
         duration: 10,
         pin: false,
         ease: "linear",
-        onReverseComplete: () => {
-          // gsap.to(meshRefs.icosahedron.current, {
-          //   visible: false,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-          // gsap.to(meshRefs.cylinder.current, {
-          //   visible: true,
-          //   duration: 0.5,
-          //   ease: "linear",
-          // });
-        },
       });
 
       gsap.to(sph.rotation, {
@@ -662,13 +533,13 @@ const BlobMesh = () => {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile, scale]);
 
   return (
     <>
       <EffectComposer>
         <Bloom
-          intensity={.2}
+          intensity={isMobile ? 0.15 : 0.2}
           luminanceThreshold={0.5}
           luminanceSmoothing={1}
           height={window.innerHeight}
@@ -679,14 +550,13 @@ const BlobMesh = () => {
       </EffectComposer>
 
       {/* Stars BG Points */}
-      <mesh ref={meshRefs.stars}>
-        <sphereGeometry args={[10, 64]} />
+      <mesh ref={meshRefs.stars} scale={scale}>
+        <sphereGeometry args={[10, isMobile ? 32 : 64]} />
         <shaderMaterial
           uniforms={{ uTime: { value: 0 } }}
           fragmentShader={`
             uniform float uTime;
             void main() {
-              // Rotate UV coordinates
               vec2 uv = gl_FragCoord.xy / vec2(50.0);
               float angle = uTime * 0.5;
               mat2 rotation = mat2(
@@ -709,7 +579,6 @@ const BlobMesh = () => {
               vec3 pos = position;
               pos.z += sin(pos.x * 2.0 + uTime) * 0.2;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-             
             }
           `}
           side={THREE.DoubleSide}
@@ -717,25 +586,26 @@ const BlobMesh = () => {
       </mesh>
 
       {/* Point Geometries */}
-      <group>
+      <group scale={scale}>
         <group ref={meshRefs.icosahedron}>
-          <points visible={true} >
-            <icosahedronGeometry args={[2, 12, 12]} />
+          <points visible={true}>
+            <icosahedronGeometry args={[2, isMobile ? 8 : 12]} />
             <primitive object={shaderMaterial} attach="material" />
           </points>
 
-          <points visible={true} rotation={[degToRad(100), 0,0]}>
-            <icosahedronGeometry args={[1.9, 12, 12]} />
+          <points visible={true} rotation={[degToRad(100), 0, 0]}>
+            <icosahedronGeometry args={[1.9, isMobile ? 8 : 12]} />
             <primitive object={shaderMaterial2} attach="material" />
           </points>
         </group>
 
         <points visible={true} scale={0} ref={meshRefs.sphere}>
-          <icosahedronGeometry args={[2, 10]} />
+          <icosahedronGeometry args={[2, isMobile ? 8 : 10]} />
           <primitive object={shaderMaterial} attach="material" />
         </points>
+
         <mesh visible={true} scale={0} ref={meshRefs.solidSphere}>
-          <sphereGeometry args={[2, 12]} />
+          <sphereGeometry args={[2, isMobile ? 8 : 12]} />
           <meshStandardMaterial
             color="teal"
             emissive="teal"
@@ -747,8 +617,9 @@ const BlobMesh = () => {
           visible={true}
           ref={meshRefs.plane}
           scale={0}
-          rotation={[degToRad(100), 0,0]}
+          rotation={[degToRad(100), 0, 0]}
         >
+          <planeGeometry args={[2, 2, isMobile ? 30 : 50, isMobile ? 30 : 50]} />
           <planeGeometry args={[2, 2, 50, 50]} />
           <primitive object={shaderMaterial} attach="material" />
         </points>

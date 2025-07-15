@@ -40,15 +40,14 @@ export default function ClingeStringe() {
 
   return (
     <section
-      className=" p-20 h-screen w-full relative clingestringe-container"
+      className="flex relative py-[5%] h-screen w-full px-[5%] md:px-[7%] clingestringe-container"
       id="clingestringe"
     >
-      {" "}
-      <h1 className="text-white clinge-stringe-text leading-none font-normal font-sans text-[4vw] w-full">
+      <h1 className="text-white puncture-resitance-text leading-none font-normal font-sans text-[8vw] max-sm:text-[12vw] max-sm:uppercase max-sm:mt-[40%] md:text-[4vw] max-sm:text-center w-full">
         Clinge Stringe
       </h1>
-      <div className="absolute  bg-white/5 backdrop-blur-sm rounded-lg bottom-10 right-10 w-[50%]  p-4">
-        <p className="text-white clinge-text-animation text-md tracking-wide font-light">
+      <div className="absolute bg-white/5 backdrop-blur-sm rounded-lg bottom-[5%] right-[5%] w-[90%] md:w-[50%] p-[3%]">
+        <p className="text-white clinge-text-animation text-[4vw] max-sm:text-center md:text-[1.2vw] tracking-wide font-light">
           {" "}
           Traditional wraps have set a standard; Quantum redefines it. Every
           inch is engineered for optimal performance, embracing products with
